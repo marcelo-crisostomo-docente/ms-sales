@@ -7,6 +7,8 @@ import com.salmontt.ms_sales.repository.SaleRepository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/sales")
 public class SaleController {
@@ -38,5 +40,9 @@ public class SaleController {
         s.setTotal(p.getPrecio() * cantidad);
 
         return repo.save(s);
+    }
+    @GetMapping
+    public List<Sale> getAll() {
+        return repo.findAll();
     }
 }
