@@ -21,7 +21,7 @@ public class SaleController {
     public Sale register(@RequestParam Long productId, @RequestParam Integer cantidad) {
         // Consumir el microservicio de productos
         ProductDTO p = restTemplate.getForObject(
-                "https://ms-products.fly.dev/api/products/" + productId, ProductDTO.class);
+                "https://ms-products.onrender.com/api/products/" + productId, ProductDTO.class);
 
         Sale s = new Sale();
         s.setProductId(productId);
