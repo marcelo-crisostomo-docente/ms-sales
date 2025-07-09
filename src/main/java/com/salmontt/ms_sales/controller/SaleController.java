@@ -1,5 +1,7 @@
 package com.salmontt.ms_sales.controller;
+
 import com.salmontt.ms_sales.dto.ProductDTO;
+import com.salmontt.ms_sales.dto.SaleRequestDTO;
 import com.salmontt.ms_sales.model.Sale;
 import com.salmontt.ms_sales.repository.SaleRepository;
 import org.springframework.web.bind.annotation.*;
@@ -18,10 +20,17 @@ public class SaleController {
     }
 
     @PostMapping
-    public Sale register(@RequestParam Long productId, @RequestParam Integer cantidad) {
-        // Consumir el microservicio de productos
+    public Sale register(@RequestBody SaleRequestDTO request) {
+        Long productId = request.getProductId();
+        Integer cantidad = request.getCantidad();
+
         ProductDTO p = restTemplate.getForObject(
-                "https://ms-products.onrender.com/api/products/" + productId, ProductDTO.class);
+                "https://ms-products.onrender.com/api/products/" + productId,
+                ProductDTO.class);
+
+        if (p == null) {
+            throw new RuntimeException("Producto no encontrado con ID " + productId);
+        }
 
         Sale s = new Sale();
         s.setProductId(productId);
@@ -31,4 +40,3 @@ public class SaleController {
         return repo.save(s);
     }
 }
-
